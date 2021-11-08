@@ -30,30 +30,28 @@ namespace AppCoffeApplication.UserModels
         {
             ApplicationUser user = new ApplicationUser()
             {
-                UserName = request.PhoneNumber,
-                
+                UserName = request.UserName,
+                Password = request.Password,
                 FullName = request.FullName,
                 Address = request.Address,
                 PhoneNumber = request.PhoneNumber,
                 SecurityStamp = Guid.NewGuid().ToString(),
-                Password = request.Password,
                 DepartmentID = request.DepartmentID,
                 BeginWork = request.BeginWork
             };
-            await _userManager.CreateAsync(user, request.Password);
+            await _userManager.CreateAsync(user, user.Password);
             return await _appCoffeeDbContext.SaveChangesAsync();
         }
 
         public async Task<int> Update(string id, UserDTOs request)
         {
             var user = _appCoffeeDbContext.Users.FirstOrDefault(u => u.Id == id);
-            user.UserName = request.PhoneNumber;
+            user.UserName = request.UserName;
             user.FullName = request.FullName;
             user.Address = request.Address;
             user.PhoneNumber = request.PhoneNumber;
             user.DepartmentID = request.DepartmentID;
             user.BeginWork = request.BeginWork;
-            
             await _userManager.ChangePasswordAsync(user, user.Password, request.Password);
             user.Password = request.Password;
             _appCoffeeDbContext.Users.Update(user);
@@ -81,8 +79,6 @@ namespace AppCoffeApplication.UserModels
                 Password = x.Password,
                 BeginWork = x.BeginWork,
                 DepartmentName = x.Department.Name,
-                /*DepartmentID= x.Department.Id,*/
-
             }).ToListAsync();
             
             return response;

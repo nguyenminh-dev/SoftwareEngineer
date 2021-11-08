@@ -168,7 +168,7 @@ namespace AppCoffeeData.Migrations
                         new
                         {
                             Id = 2,
-                            Name = "Phục vụ"
+                            Name = "Khách hàng"
                         },
                         new
                         {

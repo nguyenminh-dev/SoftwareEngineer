@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppCoffeeData.Migrations
 {
     [DbContext(typeof(AppCoffeeDbContext))]
-    [Migration("20210827030918_Initial")]
+    [Migration("20211106134100_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -170,7 +170,7 @@ namespace AppCoffeeData.Migrations
                         new
                         {
                             Id = 2,
-                            Name = "Phục vụ"
+                            Name = "Khách hàng"
                         },
                         new
                         {
@@ -226,6 +226,9 @@ namespace AppCoffeeData.Migrations
                     b.Property<int>("DrinkID")
                         .HasColumnType("int");
 
+                    b.Property<string>("DrinkName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(30)");
 
@@ -241,6 +244,8 @@ namespace AppCoffeeData.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BillID");
+
+                    b.HasIndex("DrinkID");
 
                     b.ToTable("Orders");
                 });
@@ -434,6 +439,14 @@ namespace AppCoffeeData.Migrations
                         .HasForeignKey("BillID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("AppCoffeeData.Entities.Drink", "Drink")
+                        .WithMany()
+                        .HasForeignKey("DrinkID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Drink");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

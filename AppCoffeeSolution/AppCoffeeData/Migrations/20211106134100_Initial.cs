@@ -256,6 +256,7 @@ namespace AppCoffeeData.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BillID = table.Column<int>(type: "int", nullable: false),
                     DrinkID = table.Column<int>(type: "int", nullable: false),
+                    DrinkName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(30)", nullable: true),
@@ -271,6 +272,12 @@ namespace AppCoffeeData.Migrations
                         principalTable: "Bills",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Orders_Drinks_DrinkID",
+                        column: x => x.DrinkID,
+                        principalTable: "Drinks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -279,7 +286,7 @@ namespace AppCoffeeData.Migrations
                 values: new object[,]
                 {
                     { 1, "Admin" },
-                    { 2, "Phục vụ" },
+                    { 2, "Khách hàng" },
                     { 3, "Pha chế" },
                     { 4, "Thu ngân" }
                 });
@@ -342,6 +349,11 @@ namespace AppCoffeeData.Migrations
                 name: "IX_Orders_BillID",
                 table: "Orders",
                 column: "BillID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_DrinkID",
+                table: "Orders",
+                column: "DrinkID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -362,9 +374,6 @@ namespace AppCoffeeData.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Drinks");
-
-            migrationBuilder.DropTable(
                 name: "Orders");
 
             migrationBuilder.DropTable(
@@ -374,16 +383,19 @@ namespace AppCoffeeData.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Categories");
+                name: "Bills");
 
             migrationBuilder.DropTable(
-                name: "Bills");
+                name: "Drinks");
 
             migrationBuilder.DropTable(
                 name: "Departments");
 
             migrationBuilder.DropTable(
                 name: "Tables");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
         }
     }
 }

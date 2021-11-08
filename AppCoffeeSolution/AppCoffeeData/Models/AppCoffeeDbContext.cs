@@ -37,7 +37,7 @@ namespace AppCoffeeData.Models
                     new Department
                     {
                         Id = 2,
-                        Name = "Phục vụ"
+                        Name = "Khách hàng"
                     },
                     new Department
                     {
